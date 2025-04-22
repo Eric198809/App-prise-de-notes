@@ -13,7 +13,7 @@ const App = () => {
     dispatch(getNotesFromApi())
   }
   return (
-    <div className="">
+    <div className="bg-slate-800 min-h-screen flex">
       
       <NotesList />
     </div>
