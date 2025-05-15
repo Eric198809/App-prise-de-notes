@@ -8,7 +8,7 @@ const NotesList = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-5 gap-6 ">
         {notes.list &&
           notes.list.map((note) => (
-            <div className="bg-slate-100 hover:bg-slate-50 rounded cursor-pointer p-4">
+            <div key={note.id} className="bg-slate-100 hover:bg-slate-50 rounded cursor-pointer p-4">
               <p className="text-lg font-semibold uppercase">{note.title}</p>
               <p className="text-grey-700">{note.subtitle}</p>
             </div>
