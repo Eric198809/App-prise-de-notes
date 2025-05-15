@@ -14,7 +14,7 @@ const DisplayNote = () => {
         to="/"
         className="px-2 py-2 text-slate-800 bg-slate-300 rounded mr-2"
       >
-        Note
+        Notes
       </Link>
 
       <Link
