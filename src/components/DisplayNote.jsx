@@ -1,10 +1,13 @@
 import { useSelector, useDispatch } from "react-redux";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
+import {deleteNote} from "../features/notes";
 
 const DisplayNote = () => {
+  const dispatch = useDispatch();
   const notes = useSelector((state) => state.notes);
   const { id } = useParams();
-  const note = notes.list.find((note) => note.id === id);
+  const navigate = useNavigate();
+  const note = notes.list?.find((note) => note.id === id);
   return (
     <div className="p-10">
       <Link
@@ -20,7 +23,13 @@ const DisplayNote = () => {
       >
         Mettre à jour
       </Link>
-      <button className="px-2 py-2 text-slate-200 bg-red-600 rounded mr-2">
+      <button
+        className="px-2 py-2 text-slate-200 bg-red-600 rounded mr-2"
+        onClick={() => {
+         dispatch(deleteNote(id))
+          navigate("/");
+        }}
+      >
         Supprimer
       </button>
 

@@ -1,4 +1,6 @@
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+
 
 const NotesList = () => {
   const notes = useSelector((state) => state.notes);
@@ -9,8 +11,11 @@ const NotesList = () => {
         {notes.list &&
           notes.list.map((note) => (
             <div key={note.id} className="bg-slate-100 hover:bg-slate-50 rounded cursor-pointer p-4">
+              <Link to={`/note/${note.id}`}>
               <p className="text-lg font-semibold uppercase">{note.title}</p>
               <p className="text-grey-700">{note.subtitle}</p>
+              </Link>
+              
             </div>
           ))}
 

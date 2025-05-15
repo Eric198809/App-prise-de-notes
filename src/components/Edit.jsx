@@ -2,9 +2,11 @@ import { nanoid } from "nanoid";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { addNoteFromUser } from "../features/notes.js";
-
+import { editNote } from "../features/notes.js";
+import { useParams } from "react-router-dom";
 
 const Edit = () => {
+  const notes = useSelector((state) => state.notes);
   const dispactch = useDispatch();
   const [inputsStates, setInputsStates] = useState({
     title: "",
@@ -17,26 +19,56 @@ const Edit = () => {
     bodyText: false,
   });
 
+  const { id } = useParams();
+
+  useEffect(() => {
+    if (id && notes.list) {
+      setInputsStates({
+        title: notes.list.find((note) => note.id === id).title,
+        subtitle: notes.list.find((note) => note.id === id).subtitle,
+        bodyText: notes.list.find((note) => note.id === id).bodyText,
+      });
+    } else {
+      setInputsStates({
+        title: "",
+        subtitle: "",
+        bodyText: "",
+      });
+    }
+  }, [id]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (inputsStates.title === "" || inputsStates.subtitle === "" || inputsStates.bodyText === "") {
+    if (
+      inputsStates.title === "" ||
+      inputsStates.subtitle === "" ||
+      inputsStates.bodyText === ""
+    ) {
       setShowValidation({
         title: true,
         subtitle: true,
         bodyText: true,
-      })}
-else{
-    dispactch(addNoteFromUser({...inputsStates, id:nanoid(8) }));
+      });
+    }
 
-    setInputsStates({
-    title: "",
-    subtitle: "",
-    bodyText: "",
-  })}
-    
+    if (id && notes.list) {
+      dispactch(
+        editNote({
+          ...inputsStates,
+          id,
+        })
+      );
+    } else {
+      dispactch(addNoteFromUser({ ...inputsStates, id: nanoid(8) }));
 
-  }
+      setInputsStates({
+        title: "",
+        subtitle: "",
+        bodyText: "",
+      });
+    }
+  };
 
   return (
     <div className="w-full p-10">
@@ -58,9 +90,7 @@ else{
           }}
         />
         {showValidation.title && (
-          <p className="text-red-500 text-sm mt-2">
-            Veuillez ajouter un titre
-          </p>
+          <p className="text-red-500 text-sm mt-2">Veuillez ajouter un titre</p>
         )}
         <label
           htmlFor="subtitle"
